@@ -1,5 +1,5 @@
 // JavDB
-    case /^https?:\/\/api\.((pxxgg|hechuangxinxi|yijingluowangluo)\.xyz|ujvnmkx\.cn)\/api\/v\d\/\w+/.test(
+    case /^https:\/\/(api\.(yijingluowangluo|hechuangxinxi)\.xyz|jdforrepam\.com)\/api\/v\d\/\w+/.test(
       url
     ):
       try {
