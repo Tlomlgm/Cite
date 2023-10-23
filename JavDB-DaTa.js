@@ -40,4 +40,3 @@
       } catch (error) {
         console.log(`JavDB, 出现异常: ` + error);
       }
-      break;
