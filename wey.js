@@ -3,7 +3,6 @@ const Alter = /contentType=MENU/;
 const AD = /(getContentInfo|contentType=APPSECONDAD)/;
 const My = /getUserInfo/;
 const Huiyyuan = /querySumPoint/;
-const Chepai = /vehicle/;
 
 if (Alter.test($request.url)) {
     for (var i = 0; i < WEY.data.length; i++) {
@@ -25,10 +24,6 @@ if (My.test($request.url)) {
     WEY.data.fansNumber = 99999;//我的粉丝
     WEY.data.replyNumber = 99999;//我的评论
     WEY.data.levelCode = "wvip8";//VIP等级
-}
-
-if (Chepai.test($request.url)) {
-    WEY.data.licenseNumber = "我有所念人";
 }
 
 if (Huiyyuan.test($request.url)) {
