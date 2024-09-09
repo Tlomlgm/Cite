@@ -1,15 +1,12 @@
 var WEY = JSON.parse($response.body);
 
-// 定义正则表达式匹配不同的请求路径
 const Alter = /contentType=MENU/; // 发现 商城 Tab
 const AD = /(getContentInfo|contentType=APPSECONDAD)/; // 开屏广告
 const My = /getUserInfo/; // 我的
 const Huiyuan = /querySumPoint/; // 会员积分
-const Aiche = /\/vehicle\/acquireVehicles(\?.*)?$/; // 爱车
+const Aiche = /\/vehicle\/acquireVehicles/; // 爱车
 const Weizhi = /regeo/; // 位置
-const Complaints = /\/complaintsComments\/getCollectCount/; //修复评论数据
 
-// 根据请求 URL 匹配不同的逻辑
 if (Alter.test($request.url)) {
     for (var i = 0; i < WEY.data.length; i++) {
         WEY.data[i].contentMessageList = WEY.data[i].contentMessageList.filter(item => item.title !== '发现' && item.title !== '商城');
@@ -46,12 +43,8 @@ if (Huiyuan.test($request.url)) {
 }
 
 if (Weizhi.test($request.url)) {
-    WEY.regeo.pois[0].name = "隔在远远乡"; // 位置
-}
-
-if (Complaints.test($request.url)) {
-    if (WEY.data !== undefined) {
-        WEY.data = 99999; // 修复评论数据
+    if (WEY.regeocode && WEY.regeocode.pois && WEY.regeocode.pois.length > 0) {
+        WEY.regeocode.pois[0].name = "隔在远远乡"; // 位置
     }
 }
 
