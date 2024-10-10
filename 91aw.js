@@ -33,7 +33,7 @@ if (matchedUrl && matchedUrl.length > 0) {
                 $.log(`设置新的m3u8 URL: ${matchedUrl}`);
 
                 const senPlayerUrl = `SenPlayer://x-callback-url/play?url=${encodeURIComponent(matchedUrl)}`;
-                const mediaUrl = "https://raw.githubusercontent.com/Yu9191/-/main/dingdangmao.jpg";
+                const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
 
                 $.log(`SenPlayer URL: ${senPlayerUrl}`);
                 $.log(`Media URL: ${mediaUrl}`);
