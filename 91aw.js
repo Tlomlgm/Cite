@@ -23,9 +23,9 @@ if (matchedUrl && matchedUrl.length > 0) {
                 $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
 
                 const senPlayerUrl = `SenPlayer://x-callback-url/play?url=${encodeURIComponent(matchedUrl)}`;
-                const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
+                const mediaUrl = "https://raw.githubusercontent.com/Yu9191/-/main/dingdangmao.jpg";
 
-                $.msg("获取成功", "点击跳转SenPlayer播放器" {
+                $.msg("获取成功", "点击打开SenPlayer播放器", {
                     "open-url": senPlayerUrl,
                     "media-url": mediaUrl,
                 });
