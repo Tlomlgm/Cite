@@ -33,13 +33,13 @@ if (matchedUrl && matchedUrl.length > 0) {
                 $.log(`设置新的m3u8 URL: ${matchedUrl}`);
 
                 const senPlayerUrl = `SenPlayer://x-callback-url/play?url=${encodeURIComponent(matchedUrl)}`;
-                const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
+                const mediaUrl = "https://raw.githubusercontent.com/Yu9191/-/main/dingdangmao.jpg";
 
                 $.log(`SenPlayer URL: ${senPlayerUrl}`);
                 $.log(`Media URL: ${mediaUrl}`);
 
                 // 确保正确使用 $.msg 方法
-                $.msg("获取成功", "点击通知使用SenPlayer播放", {
+                $.msg("获取成功", "点击打开SenPlayer播放器", "已安装请忽略", {
                     "open-url": senPlayerUrl,
                     "media-url": mediaUrl,
                 });
