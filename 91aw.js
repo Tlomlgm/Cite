@@ -25,7 +25,7 @@ if (matchedUrl && matchedUrl.length > 0) {
                 const senPlayerUrl = `SenPlayer://x-callback-url/play?url=${encodeURIComponent(matchedUrl)}`;
                 const mediaUrl = "https://raw.githubusercontent.com/Yu9191/-/main/dingdangmao.jpg";
 
-                $.msg("获取成功", "点击打开SenPlayer播放器", {
+                $.msg("获取成功", "请安装SenPlayer播放器", "已安装请忽略", {
                     "open-url": senPlayerUrl,
                     "media-url": mediaUrl,
                 });
