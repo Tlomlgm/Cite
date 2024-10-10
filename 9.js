@@ -21,31 +21,25 @@ if (matchedUrl && matchedUrl.length > 0) {
             if (!notify || notify !== matchedUrl) {
                 $.setdata(matchedUrl, "m3u8");
 
-                // 从参数 'c' 中提取视频 ID
-                const urlObj = new URL(matchedUrl);
-                const cParam = urlObj.searchParams.get('c'); // 'https://example.com/video/12345'
-                let videoId = null;
+                // 调用外部 API 获取封面图像 URL
+                const apiUrl = `https://your-api.com/getCover?m3u8=${encodeURIComponent(matchedUrl)}`;
+                const response = await $.http.get({ url: apiUrl });
 
-                if (cParam) {
-                    const cUrl = new URL(cParam);
-                    // 假设视频 ID 是路径的最后一部分
-                    const pathSegments = cUrl.pathname.split('/');
-                    videoId = pathSegments[pathSegments.length - 1];
-                }
-
-                // 构建封面图像 URL
                 let mediaUrl = "https://raw.githubusercontent.com/Yu9191/-/main/dingdangmao.jpg"; // 默认封面
-                if (videoId) {
-                    // 根据实际情况替换为正确的封面图像 URL 构建方式
-                    mediaUrl = `https://example.com/video/${videoId}/cover.jpg`;
 
-                    // 验证封面图像 URL 是否有效
-                    const coverResponse = await $.http.get({ url: mediaUrl });
-                    if (coverResponse.status !== 200) {
-                        // 如果封面图像无效，使用默认封面
-                        mediaUrl = "https://raw.githubusercontent.com/Yu9191/-/main/dingdangmao.jpg";
-                        $.log(`封面图像获取失败，使用默认封面。状态码: ${coverResponse.status}`);
+                if (response.status === 200) {
+                    try {
+                        const data = JSON.parse(response.body);
+                        if (data.coverUrl) {
+                            mediaUrl = data.coverUrl;
+                        } else {
+                            $.log("API 返回的数据中不包含 coverUrl");
+                        }
+                    } catch (parseError) {
+                        $.log(`解析 API 响应失败: ${parseError}`);
                     }
+                } else {
+                    $.log(`获取封面图像失败，状态码: ${response.status}`);
                 }
 
                 const senPlayerUrl = `SenPlayer://x-callback-url/play?url=${encodeURIComponent(matchedUrl)}`;
