@@ -12,9 +12,9 @@ if (matchedUrl && matchedUrl.length > 0) {
             if (!notify || notify != matchedUrl) {
       $.setdata(url, "m3u8");
       const senPlayerUrl = "SenPlayer://x-callback-url/play?url=" + encodeURIComponent(url),
-        mediaUrl = "https://raw.githubusercontent.com/Yu9191/-/main/dingdangmao.jpg";
+        mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
 
-      $.msg("获取成功", "请安装SenPlayer播放器", "已安装请忽略", {
+      $.msg("获取成功", "点击通知使用SenPlayer播放", "🎉🎉🎉", {
         "open-url": senPlayerUrl,
         "media-url": mediaUrl,
       });
