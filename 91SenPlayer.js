@@ -1,28 +1,63 @@
 const $ = new Env("GOGOGOGO");
 
-let url = $request.url, 
-  headers = $request.headers;
+let url = $request.url;
+let headers = $request.headers;
+
+$.log(`请求的URL: ${url}`);
+$.log(`请求的Headers: ${JSON.stringify(headers)}`);
+
+// 定义正则表达式匹配 .m3u8 URL
 const m3u8Regex = /https:\/\/\S+\.m3u8\?token=[^&]+&c=https:\/\/\S+/;
 let matchedUrl = url.match(m3u8Regex);
+
 if (matchedUrl && matchedUrl.length > 0) {
     matchedUrl = matchedUrl[0];
-    if (headers.hasOwnProperty("X-Playback-Session-Id") || headers.hasOwnProperty("x-playback-session-id")) {
+    $.log(`匹配到的URL: ${matchedUrl}`);
+
+    // 将所有请求头键转换为小写，便于统一检查
+    const headersLower = Object.keys(headers).reduce((acc, key) => {
+        acc[key.toLowerCase()] = headers[key];
+        return acc;
+    }, {});
+    
+    $.log(`转换后的Headers: ${JSON.stringify(headersLower)}`);
+
+    if (headersLower.hasOwnProperty("x-playback-session-id")) {
+        $.log(`存在 x-playback-session-id 请求头`);
         try {
             const notify = $.getdata("m3u8");
-            if (!notify || notify != matchedUrl) {
-      $.setdata(url, "m3u8");
-      const senPlayerUrl = "SenPlayer://x-callback-url/play?url=" + encodeURIComponent(url),
-        mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
+            $.log(`存储的URL: ${notify}`);
 
-      $.msg("获取成功", "点击通知使用SenPlayer播放", "🎉🎉🎉", {
-        "open-url": senPlayerUrl,
-        "media-url": mediaUrl,
-      });
+            if (!notify || notify !== matchedUrl) { // 使用 matchedUrl 进行比较
+                $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
+                $.log(`设置新的m3u8 URL: ${matchedUrl}`);
+
+                const senPlayerUrl = `SenPlayer://x-callback-url/play?url=${encodeURIComponent(matchedUrl)}`;
+                const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
+
+                $.log(`SenPlayer URL: ${senPlayerUrl}`);
+                $.log(`Media URL: ${mediaUrl}`);
+
+                // 确保正确使用 $.msg 方法
+                $.msg("获取成功", "点击通知使用Stay下载", "☼☀︎☼☀︎☼☀︎", {
+                    "open-url": senPlayerUrl,
+                    "media-url": mediaUrl,
+                });
+                $.log(`发送通知成功`);
+            } else {
+                $.log(`URL 已经存在，无需发送通知`);
+            }
+        } catch (error) {
+            // 使用宿主环境的日志记录方法
+            $.log(`发生错误: ${error}`);
+        }
+    } else {
+        $.log(`请求头中不存在 x-playback-session-id`);
     }
-  } catch (error) {
-    console.error("An error occurred:", error);
-  }
+} else {
+    $.log(`URL 不匹配 m3u8 正则表达式`);
 }
+
 $.done({});
 
 //e
