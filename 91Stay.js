@@ -32,7 +32,7 @@ if (matchedUrl && matchedUrl.length > 0) {
                 $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
                 $.log(`设置新的m3u8 URL: ${matchedUrl}`);
 
-                const senPlayerUrl = `stay://x-callback-url/open-download?url=${encodeURIComponent(matchedUrl)}`;
+                const StayUrl = `stay://x-callback-url/open-download?url=${encodeURIComponent(matchedUrl)}`;
                 const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
 
                 $.log(`SenPlayer URL: ${senPlayerUrl}`);
@@ -40,7 +40,7 @@ if (matchedUrl && matchedUrl.length > 0) {
 
                 // 确保正确使用 $.msg 方法
                 $.msg("获取成功", "点击通知使用Stay下载", "☼☀︎☼☀︎☼☀︎", {
-                    "open-url": senPlayerUrl,
+                    "open-url": StayUrl,
                     "media-url": mediaUrl,
                 });
                 $.log(`发送通知成功`);
