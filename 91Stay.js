@@ -35,7 +35,7 @@ if (matchedUrl && matchedUrl.length > 0) {
                 const StayUrl = `stay://x-callback-url/open-download?url=${encodeURIComponent(matchedUrl)}`;
                 const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Stay.png";
 
-                $.log(`SenPlayer URL: ${senPlayerUrl}`);
+                $.log(`Stay URL: ${StayUrl}`);
                 $.log(`Media URL: ${mediaUrl}`);
 
                 // 确保正确使用 $.msg 方法
