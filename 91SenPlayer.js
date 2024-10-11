@@ -39,7 +39,7 @@ if (matchedUrl && matchedUrl.length > 0) {
                 $.log(`Media URL: ${mediaUrl}`);
 
                 // 确保正确使用 $.msg 方法
-                $.msg("获取成功", "点击通知使用Stay下载", "☼☀︎☼☀︎☼☀︎", {
+                $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼", "点击通知使用SenPlayer播放", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼", {
                     "open-url": senPlayerUrl,
                     "media-url": mediaUrl,
                 });
