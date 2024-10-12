@@ -9,7 +9,7 @@ if (matchedUrl && matchedUrl.length > 0) {
             const notify = $.getdata("m3u8");
             if (!notify || notify != matchedUrl) {
                 $.setdata(matchedUrl, "m3u8");
-                $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼", "☼☀︎☼点击通知跳转Safari观看☼☀︎☼", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼", matchedUrl);
+                $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼", "☼点击通知跳转Safari观看☀︎", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼", matchedUrl);
             }
         } catch (e) {
             console.error("An error occurred:", e);
