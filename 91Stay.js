@@ -19,7 +19,7 @@ if (matchedUrl && matchedUrl.length > 0) {
         acc[key.toLowerCase()] = headers[key];
         return acc;
     }, {});
-    
+    
     $.log(`转换后的Headers: ${JSON.stringify(headersLower)}`);
 
     if (headersLower.hasOwnProperty("x-playback-session-id")) {
@@ -32,20 +32,14 @@ if (matchedUrl && matchedUrl.length > 0) {
                 $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
                 $.log(`设置新的m3u8 URL: ${matchedUrl}`);
 
-                // 尝试从 URL 中获取视频标题，去掉路径和参数
-                let title = matchedUrl.split("/").pop().split("?")[0]; // 提取 URL 中的最后一段作为文件名
-                title = decodeURIComponent(title).replace(/\.\w+$/, ''); // 如果有文件扩展名，去掉它
-                title = title || "defaultTitle"; // 如果提取不到标题，使用默认标题
-                $.log(`提取的标题: ${title}`);
-
-                const StayUrl = `stay://x-callback-url/open-download?url=${encodeURIComponent(matchedUrl)}&folder=${encodeURIComponent(title)}`;
+                const StayUrl = `stay://x-callback-url/open-download?url=${encodeURIComponent(matchedUrl)}`;
                 const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Stay.png";
 
                 $.log(`Stay URL: ${StayUrl}`);
                 $.log(`Media URL: ${mediaUrl}`);
 
                 // 确保正确使用 $.msg 方法
-                $.msg("获取成功", `点击通知使用Stay下载: ${title}`, "☼☀︎☼☀︎☼☀︎", {
+                $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", "☼点击通知使用Stay下载☀︎", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
                     "open-url": StayUrl,
                     "media-url": mediaUrl,
                 });
