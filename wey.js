@@ -19,21 +19,21 @@ if (AD.test($request.url)) {
 
 if (My.test($request.url)) {
     WEY.data.nick = "99999"; // 昵称
-    WEY.data.numberOfSubscribed = 99999; // 个人订阅
-    WEY.data.threadPraisedNumber = "99999"; // 个人获赞
-    WEY.data.likeOtherThreadNumber = 99999; // 我的点赞
-    WEY.data.collectNumber = "99999"; // 我的收藏
-    WEY.data.concernNumber = 99999; // 我的关注
-    WEY.data.fansNumber = 99999; // 我的粉丝
-    WEY.data.replyNumber = 99999; // 我的评论
+    WEY.data.numberOfSubscribed = 99999; // 订阅
+    WEY.data.threadPraisedNumber = "99999"; // 获赞
+    WEY.data.likeOtherThreadNumber = 99999; // 点赞
+    WEY.data.collectNumber = "99999"; // 收藏
+    WEY.data.concernNumber = 99999; // 关注
+    WEY.data.fansNumber = 99999; // 粉丝
+    WEY.data.replyNumber = 99999; // 评论
     WEY.data.levelCode = "wvip8"; // VIP 等级
 }
 
 if (Aiche.test($request.url)) {
-    // 确保 data 是数组并且有元素
     if (WEY.data && WEY.data.length > 0) {
-        WEY.data[0].licenseNumber = "我有所念人"; // 车牌号
-        WEY.data[0].material90Url = "https://s2.loli.net/2024/09/09/YkSMRctE1zjfUyB.png"; // 车体图
+        WEY.data[0].showBrandName = "VV7 GT PHEV"; // 车型
+        WEY.data[0].licenseNumber = " GWM WEY"; // 车牌
+        WEY.data[0].material90Url = "https://s2.loli.net/2024/11/16/UDTjy2PSKsMYgGB.png"; // 车体图
     }
 }
 
@@ -44,7 +44,7 @@ if (Huiyuan.test($request.url)) {
 
 if (Weizhi.test($request.url)) {
     if (WEY.regeocode && WEY.regeocode.pois && WEY.regeocode.pois.length > 0) {
-        WEY.regeocode.pois[0].name = "隔在远远乡"; // 位置
+        WEY.regeocode.pois[0].name = " VV7GT PHEV"; // 位置
     }
 }
 
