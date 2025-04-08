@@ -6,7 +6,7 @@ let headers = $request.headers;
 $.log(`请求的URL: ${url}`);
 $.log(`请求的Headers: ${JSON.stringify(headers)}`);
 
-// 定义正则表达式匹配.m3u8 URL
+// 定义正则表达式匹配 .m3u8 URL
 const m3u8Regex = /https:\/\/\S+\.m3u8\?token=[^&]+&c=https:\/\/\S+/;
 let matchedUrl = url.match(m3u8Regex);
 
@@ -19,7 +19,7 @@ if (matchedUrl && matchedUrl.length > 0) {
         acc[key.toLowerCase()] = headers[key];
         return acc;
     }, {});
-
+    
     $.log(`转换后的Headers: ${JSON.stringify(headersLower)}`);
 
     if (headersLower.hasOwnProperty("x-playback-session-id")) {
@@ -28,51 +28,20 @@ if (matchedUrl && matchedUrl.length > 0) {
             const notify = $.getdata("m3u8");
             $.log(`存储的URL: ${notify}`);
 
-            if (!notify || notify!== matchedUrl) { // 使用 matchedUrl 进行比较
+            if (!notify || notify !== matchedUrl) { // 使用 matchedUrl 进行比较
                 $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
                 $.log(`设置新的m3u8 URL: ${matchedUrl}`);
 
-                // 获取选择的播放器
-                const selectedPlayer = $.getdata("Player.SCHEME") || "Safari";  // 获取选择的播放器，默认 Safari
-                $.log(`选择的播放器: ${selectedPlayer}`);
+                const StayUrl = `stay://x-callback-url/open-download?url=${encodeURIComponent(matchedUrl)}`;
+                const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Stay.png";
 
-                // 播放器 scheme 对应的 URL 和图标
-                const playerScheme = {
-                    "SenPlayer": "SenPlayer://x-callback-url/play?url=",
-                    "Infuse": "infuse://x-callback-url/play?url=",
-                    "PotPlayer": "potplayer://url=",
-                    "nPlayer": "nplayer-http://",
-                    "VLC": "vlc://",  // VLC 播放器的 URL scheme
-                    "alook": "alook://open?url=",
-                    "yybp": "yybp://play?url=",
-                    "zoeplay": "zoeplay://",
-                    "Safari": null  // Safari 不需要 URL scheme
-                };
-
-                // 对应的播放器图标
-                const playerIcons = {
-                    "SenPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png",
-                    "Infuse": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Infuse.png",
-                    "PotPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/PotPlayer.png",
-                    "nPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/nPlayer.png",
-                    "VLC": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/VLC.png",  // VLC 图标
-                    "alook": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/alook.png",
-                    "yybp": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/yybp.png",
-                    "zoeplay": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/zoeplay.png",
-                    "Safari": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Safari.png"
-                };
-
-                // 根据选择的播放器生成对应的 URL
-                const playerUrl = playerScheme[selectedPlayer]? `${playerScheme[selectedPlayer]}${encodeURIComponent(matchedUrl)}` : null;
-                const mediaUrl = playerIcons[selectedPlayer] || "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/default.png";  // 默认图标
-
-                $.log(`播放器 URL: ${playerUrl}`);
+                $.log(`Stay URL: ${StayUrl}`);
                 $.log(`Media URL: ${mediaUrl}`);
 
-                // 确保正确使用 $.msg 方法发送通知
-                $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", `点击通知使用 ${selectedPlayer} 播放器播放`, "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
-                    "open-url": playerUrl,  // 动态修改为播放器 URL
-                    "media-url": mediaUrl,  // 动态更新为对应的图标
+                // 确保正确使用 $.msg 方法
+                $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", "☼点击通知使用Stay下载☀︎", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
+                    "open-url": StayUrl,
+                    "media-url": mediaUrl,
                 });
                 $.log(`发送通知成功`);
             } else {
