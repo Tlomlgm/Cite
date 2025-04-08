@@ -19,48 +19,36 @@ if (matchedUrl && matchedUrl.length > 0) {
         acc[key.toLowerCase()] = headers[key];
         return acc;
     }, {});
-
+    
     $.log(`转换后的Headers: ${JSON.stringify(headersLower)}`);
 
     if (headersLower.hasOwnProperty("x-playback-session-id")) {
         $.log(`存在 x-playback-session-id 请求头`);
         try {
-            // 每次匹配到 URL 都重新发送通知
-            $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl
+            const notify = $.getdata("m3u8");
+            $.log(`存储的URL: ${notify}`);
 
-            // 获取选择的播放器
-            const selectedPlayer = $.getdata("Player.SCHEME") || "Safari"; // 获取选择的播放器，默认 Safari
-            $.log(`选择的播放器: ${selectedPlayer}`);
+            if (!notify || notify !== matchedUrl) { // 使用 matchedUrl 进行比较
+                $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
+                $.log(`设置新的m3u8 URL: ${matchedUrl}`);
 
-            // 播放器 scheme 对应的 URL
-            const playerScheme = {
-                "SenPlayer": "SenPlayer://x-callback-url/play?url=",
-                "Infuse": "infuse://x-callback-url/play?url=",
-                "PotPlayer": "potplayer://url=",
-                "nPlayer": "nplayer-http://",
-                "VLC": "vlc://",
-                "alook": "alook://open?url=",
-                "yybp": "yybp://play?url=",
-                "zoeplay": "zoeplay://",
-                "Safari": null
-            };
+                const StayUrl = `stay://x-callback-url/open-download?url=${encodeURIComponent(matchedUrl)}`;
+                const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Stay.png";
 
-            // 根据选择的播放器生成对应的 URL
-            const playerUrl = playerScheme[selectedPlayer] ? `${playerScheme[selectedPlayer]}${encodeURIComponent(matchedUrl)}` : null;
-            const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
+                $.log(`Stay URL: ${StayUrl}`);
+                $.log(`Media URL: ${mediaUrl}`);
 
-            $.log(`播放器 URL: ${playerUrl}`);
-            $.log(`Media URL: ${mediaUrl}`);
-
-            // 发送通知
-            if (playerUrl) {
-                $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", "☼点击通知使用播放器播放☀︎", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
-                    "open-url": playerUrl,
+                // 确保正确使用 $.msg 方法
+                $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", "☼点击通知使用Stay下载☀︎", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
+                    "open-url": StayUrl,
                     "media-url": mediaUrl,
                 });
                 $.log(`发送通知成功`);
+            } else {
+                $.log(`URL 已经存在，无需发送通知`);
             }
         } catch (error) {
+            // 使用宿主环境的日志记录方法
             $.log(`发生错误: ${error}`);
         }
     } else {
