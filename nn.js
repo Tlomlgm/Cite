@@ -39,18 +39,18 @@ $.log(`选择的播放器: ${selectedPlayer}`);
 // 播放器 scheme 对应的 URL 和图标
 const playerScheme = {
     "SenPlayer": "SenPlayer://x-callback-url/play?url=",
+    "Safari": null  // Safari 不需要 URL scheme
     "Infuse": "infuse://x-callback-url/play?url=",
     "PotPlayer": "potplayer://url=",
     "nPlayer": "nplayer-http://",
-    "VLC": "vlc://",  // VLC 播放器的 URL scheme
     "alook": "alook://open?url=",
     "yybp": "yybp://play?url=",
     "zoeplay": "zoeplay://",
-    "Safari": null  // Safari 不需要 URL scheme
 };
 
 // 对应的播放器图标
 const playerIcons = {
+    "Safari": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Safari.png"
     "SenPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png",
     "Infuse": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Infuse.png",
     "PotPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/PotPlayer.png",
@@ -59,7 +59,6 @@ const playerIcons = {
     "alook": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/alook.png",
     "yybp": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/yybp.png",
     "zoeplay": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/zoeplay.png",
-    "Safari": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Safari.png"
 };
 
 // 根据选择的播放器生成对应的 URL
