@@ -38,8 +38,8 @@ $.log(`选择的播放器: ${selectedPlayer}`);
 
 // 播放器 scheme 对应的 URL 和图标
 const playerScheme = {
+    "Safari": null , // Safari 不需要 URL scheme
     "SenPlayer": "SenPlayer://x-callback-url/play?url=",
-    "Safari": null  // Safari 不需要 URL scheme
     "Infuse": "infuse://x-callback-url/play?url=",
     "PotPlayer": "potplayer://url=",
     "nPlayer": "nplayer-http://",
