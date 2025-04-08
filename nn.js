@@ -32,8 +32,8 @@ if (matchedUrl && matchedUrl.length > 0) {
                 $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
                 $.log(`设置新的m3u8 URL: ${matchedUrl}`);
 
-                // 获取选择的播放器
-const selectedPlayer = $.getdata("Player.SCHEME") || "Safari";  // 获取选择的播放器，默认 Safari
+// 获取选择的播放器
+const selectedPlayer = $.getData("Player.SCHEME") || "Safari";  // 获取选择的播放器，默认 Safari
 $.log(`选择的播放器: ${selectedPlayer}`);
 
 // 播放器 scheme 对应的 URL 和图标
@@ -50,7 +50,7 @@ const playerScheme = {
 
 // 对应的播放器图标
 const playerIcons = {
-    "Safari": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Safari.png"
+    "Safari": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Safari.png",
     "SenPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png",
     "Infuse": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Infuse.png",
     "PotPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/PotPlayer.png",
@@ -60,15 +60,18 @@ const playerIcons = {
     "zoeplay": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/zoeplay.png",
 };
 
+// 假设这里已经定义了 matchedUrl 变量
+const matchedUrl = "your_video_url_here";
+
 // 根据选择的播放器生成对应的 URL
-const playerUrl = playerScheme[selectedPlayer] ? `${playerScheme[selectedPlayer]}${encodeURIComponent(matchedUrl)}` : null;
+const playerUrl = playerScheme[selectedPlayer]? `${playerScheme[selectedPlayer]}${encodeURIComponent(matchedUrl)}` : null;
 const mediaUrl = playerIcons[selectedPlayer] || "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/default.png";  // 默认图标
 
 $.log(`播放器 URL: ${playerUrl}`);
 $.log(`Media URL: ${mediaUrl}`);
 
 // 确保正确使用 $.msg 方法发送通知
-$.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", `点击通知使用 ${selectedPlayer} 播放器播放`, "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
+$.msg("提示", `点击通知使用 ${selectedPlayer} 播放器播放`, "查看", {
     "open-url": playerUrl,  // 动态修改为播放器 URL
     "media-url": mediaUrl,  // 动态更新为对应的图标
 });
