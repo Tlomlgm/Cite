@@ -22,7 +22,7 @@ const $ = new Env("麻豆社区");
 // 视频无法播放联系作者TG更新
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwdWJsaWMiLCJleHAiOjE3NDY2MzU1NDMsImlzc3VlciI6ImNvbS5idXR0ZXJmbHkiLCJzdWIiOiJhc2lnbiIsInVzZXJJZCI6MTcwNjI3NjkxfQ.DUQdJOKVJP_C4PRV1eccbQ1fAXwDbs1d1KVrUntSIt0";
 // 获取选择的播放器
-const selectedPlayer = $.getdata("Player.SCHEME") || "Safari";  // 获取选择的播放器，默认 Safari
+const selectedPlayer = $argument.Player || "Safari";  // 从 $argument.Player 获取选择的播放器，默认 Safari
 $.log(`选择的播放器: ${selectedPlayer}`);
 
 // 播放器 scheme 对应的 URL 和图标
