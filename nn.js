@@ -32,17 +32,35 @@ if (matchedUrl && matchedUrl.length > 0) {
                 $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
                 $.log(`设置新的m3u8 URL: ${matchedUrl}`);
 
-                const StayUrl = `stay://x-callback-url/open-download?url=${encodeURIComponent(matchedUrl)}`;
-                const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Stay.png";
+                // 获取选择的播放器
+const selectedPlayer = $.getdata("Player.SCHEME") || "Safari"; // 获取选择的播放器，默认 Safari
+$.log(`选择的播放器: ${selectedPlayer}`);
 
-                $.log(`Stay URL: ${StayUrl}`);
-                $.log(`Media URL: ${mediaUrl}`);
+// 播放器 scheme 对应的 URL
+const playerScheme = {
+    "SenPlayer": "SenPlayer://x-callback-url/play?url=",
+    "Infuse": "infuse://x-callback-url/play?url=",
+    "PotPlayer": "potplayer://url=",
+    "nPlayer": "nplayer-http://",
+    "VLC": "vlc://",  // 这里选择 VLC 作为新的播放器
+    "alook": "alook://open?url=",
+    "yybp": "yybp://play?url=",
+    "zoeplay": "zoeplay://",
+    "Safari": null
+};
 
-                // 确保正确使用 $.msg 方法
-                $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", "☼点击通知使用Stay下载☀︎", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
-                    "open-url": StayUrl,
-                    "media-url": mediaUrl,
-                });
+// 根据选择的播放器生成对应的 URL
+const playerUrl = playerScheme[selectedPlayer] ? `${playerScheme[selectedPlayer]}${encodeURIComponent(matchedUrl)}` : null;
+const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/VLC.png";  // 更新为对应播放器的图标
+
+$.log(`播放器 URL: ${playerUrl}`);
+$.log(`Media URL: ${mediaUrl}`);
+
+// 确保正确使用 $.msg 方法发送通知
+$.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", "☼点击通知使用VLC播放器播放☀︎", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
+    "open-url": playerUrl,  // 修改为播放器 URL
+    "media-url": mediaUrl,  // 更新为 VLC 图标
+});
                 $.log(`发送通知成功`);
             } else {
                 $.log(`URL 已经存在，无需发送通知`);
