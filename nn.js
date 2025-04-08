@@ -33,33 +33,46 @@ if (matchedUrl && matchedUrl.length > 0) {
                 $.log(`设置新的m3u8 URL: ${matchedUrl}`);
 
                 // 获取选择的播放器
-const selectedPlayer = $.getdata("Player.SCHEME") || "Safari"; // 获取选择的播放器，默认 Safari
+const selectedPlayer = $.getdata("Player.SCHEME") || "Safari";  // 获取选择的播放器，默认 Safari
 $.log(`选择的播放器: ${selectedPlayer}`);
 
-// 播放器 scheme 对应的 URL
+// 播放器 scheme 对应的 URL 和图标
 const playerScheme = {
     "SenPlayer": "SenPlayer://x-callback-url/play?url=",
     "Infuse": "infuse://x-callback-url/play?url=",
     "PotPlayer": "potplayer://url=",
     "nPlayer": "nplayer-http://",
-    "VLC": "vlc://",  // 这里选择 VLC 作为新的播放器
+    "VLC": "vlc://",  // VLC 播放器的 URL scheme
     "alook": "alook://open?url=",
     "yybp": "yybp://play?url=",
     "zoeplay": "zoeplay://",
-    "Safari": null
+    "Safari": null  // Safari 不需要 URL scheme
+};
+
+// 对应的播放器图标
+const playerIcons = {
+    "SenPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png",
+    "Infuse": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Infuse.png",
+    "PotPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/PotPlayer.png",
+    "nPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/nPlayer.png",
+    "VLC": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/VLC.png",  // VLC 图标
+    "alook": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/alook.png",
+    "yybp": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/yybp.png",
+    "zoeplay": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/zoeplay.png",
+    "Safari": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Safari.png"
 };
 
 // 根据选择的播放器生成对应的 URL
 const playerUrl = playerScheme[selectedPlayer] ? `${playerScheme[selectedPlayer]}${encodeURIComponent(matchedUrl)}` : null;
-const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/VLC.png";  // 更新为对应播放器的图标
+const mediaUrl = playerIcons[selectedPlayer] || "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/default.png";  // 默认图标
 
 $.log(`播放器 URL: ${playerUrl}`);
 $.log(`Media URL: ${mediaUrl}`);
 
 // 确保正确使用 $.msg 方法发送通知
-$.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", "☼点击通知使用VLC播放器播放☀︎", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
-    "open-url": playerUrl,  // 修改为播放器 URL
-    "media-url": mediaUrl,  // 更新为 VLC 图标
+$.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", `点击通知使用 ${selectedPlayer} 播放器播放`, "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
+    "open-url": playerUrl,  // 动态修改为播放器 URL
+    "media-url": mediaUrl,  // 动态更新为对应的图标
 });
                 $.log(`发送通知成功`);
             } else {
