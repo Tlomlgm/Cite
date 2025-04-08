@@ -55,7 +55,6 @@ const playerIcons = {
     "Infuse": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/Infuse.png",
     "PotPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/PotPlayer.png",
     "nPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/nPlayer.png",
-    "VLC": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/VLC.png",  // VLC 图标
     "alook": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/alook.png",
     "yybp": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/yybp.png",
     "zoeplay": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/zoeplay.png",
