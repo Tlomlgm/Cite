@@ -25,12 +25,8 @@ if (matchedUrl && matchedUrl.length > 0) {
     if (headersLower.hasOwnProperty("x-playback-session-id")) {
         $.log(`存在 x-playback-session-id 请求头`);
         try {
-            const notify = $.getdata("m3u8");
-            $.log(`存储的URL: ${notify}`);
-
-            // 无需检查是否相同，直接发送通知
-            $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
-            $.log(`设置新的m3u8 URL: ${matchedUrl}`);
+            // 每次匹配到 URL 都重新发送通知
+            $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl
 
             // 获取选择的播放器
             const selectedPlayer = $.getdata("Player.SCHEME") || "Safari"; // 获取选择的播放器，默认 Safari
@@ -49,6 +45,7 @@ if (matchedUrl && matchedUrl.length > 0) {
                 "Safari": null
             };
 
+            // 根据选择的播放器生成对应的 URL
             const playerUrl = playerScheme[selectedPlayer] ? `${playerScheme[selectedPlayer]}${encodeURIComponent(matchedUrl)}` : null;
             const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
 
