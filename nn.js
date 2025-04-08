@@ -28,38 +28,40 @@ if (matchedUrl && matchedUrl.length > 0) {
             const notify = $.getdata("m3u8");
             $.log(`存储的URL: ${notify}`);
 
-            if (!notify || notify !== matchedUrl) { // 使用 matchedUrl 进行比较
-                $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
-                $.log(`设置新的m3u8 URL: ${matchedUrl}`);
+            // 无需检查是否相同，直接发送通知
+            $.setdata(matchedUrl, "m3u8"); // 存储 matchedUrl 而非完整的 url
+            $.log(`设置新的m3u8 URL: ${matchedUrl}`);
 
-                const selectedPlayer = $.getdata("player") || "Safari"; // 获取选择的播放器，默认 Safari
-                const playerScheme = {
-                    "SenPlayer": "SenPlayer://x-callback-url/play?url=",
-                    "Infuse": "infuse://x-callback-url/play?url=",
-                    "PotPlayer": "potplayer://url=",
-                    "nPlayer": "nplayer-http://",
-                    "VLC": "vlc://",
-                    "alook": "alook://open?url=",
-                    "yybp": "yybp://play?url=",
-                    "zoeplay": "zoeplay://",
-                    "Safari": null
-                };
+            // 获取选择的播放器
+            const selectedPlayer = $.getdata("Player.SCHEME") || "Safari"; // 获取选择的播放器，默认 Safari
+            $.log(`选择的播放器: ${selectedPlayer}`);
 
-                const playerUrl = playerScheme[selectedPlayer] ? `${playerScheme[selectedPlayer]}${encodeURIComponent(matchedUrl)}` : null;
-                const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
+            // 播放器 scheme 对应的 URL
+            const playerScheme = {
+                "SenPlayer": "SenPlayer://x-callback-url/play?url=",
+                "Infuse": "infuse://x-callback-url/play?url=",
+                "PotPlayer": "potplayer://url=",
+                "nPlayer": "nplayer-http://",
+                "VLC": "vlc://",
+                "alook": "alook://open?url=",
+                "yybp": "yybp://play?url=",
+                "zoeplay": "zoeplay://",
+                "Safari": null
+            };
 
-                $.log(`播放器 URL: ${playerUrl}`);
-                $.log(`Media URL: ${mediaUrl}`);
+            const playerUrl = playerScheme[selectedPlayer] ? `${playerScheme[selectedPlayer]}${encodeURIComponent(matchedUrl)}` : null;
+            const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
 
-                if (playerUrl) {
-                    $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", "☼点击通知使用播放器播放☀︎", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
-                        "open-url": playerUrl,
-                        "media-url": mediaUrl,
-                    });
-                    $.log(`发送通知成功`);
-                }
-            } else {
-                $.log(`URL 已经存在，无需发送通知`);
+            $.log(`播放器 URL: ${playerUrl}`);
+            $.log(`Media URL: ${mediaUrl}`);
+
+            // 发送通知
+            if (playerUrl) {
+                $.msg("☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", "☼点击通知使用播放器播放☀︎", "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎", {
+                    "open-url": playerUrl,
+                    "media-url": mediaUrl,
+                });
+                $.log(`发送通知成功`);
             }
         } catch (error) {
             $.log(`发生错误: ${error}`);
