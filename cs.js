@@ -100,8 +100,6 @@ async function main() {
     }
 }
 
-main();
-
 main().catch(e => {
     console.log(`❌ 执行错误: ${e.message}`);
     $.done({});
