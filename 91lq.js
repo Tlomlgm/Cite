@@ -1,7 +1,7 @@
 const $ = new Env("GOGOGOGO");
 
 // 从 $argument.Player 获取播放器配置
-const player = $argument.Player || "Safari"; // 默认值 Safari
+const player = $argument.Player || "Safari"; // 默认播放器为 Safari
 
 // 播放器映射表
 const playerMap = {
@@ -29,32 +29,70 @@ if (!playerMap[scheme] && !scheme?.includes("://") && scheme !== "Safari") {
 
 $.log(`选择的播放器: ${player}, Scheme: ${playerScheme}`);
 
-let url = $request.url, headers = $request.headers;
+let url = $request.url;
+let headers = $request.headers;
+
+$.log(`请求的URL: ${url}`);
+$.log(`请求的Headers: ${JSON.stringify(headers)}`);
+
+// 定义正则表达式匹配 .m3u8 URL
 const m3u8Regex = /https:\/\/\S+\.m3u8\?token=[^&]+&c=https:\/\/\S+/;
 let matchedUrl = url.match(m3u8Regex);
 
 if (matchedUrl && matchedUrl.length > 0) {
     matchedUrl = matchedUrl[0];
-    if (headers.hasOwnProperty("X-Playback-Session-Id") || headers.hasOwnProperty("x-playback-session-id")) {
-        try {
-            // 构造最终的播放 URL
-            const finalUrl = playerScheme ? playerScheme + encodeURIComponent(matchedUrl) : matchedUrl;
+    $.log(`匹配到的URL: ${matchedUrl}`);
 
+    // 将所有请求头键转换为小写，便于统一检查
+    const headersLower = Object.keys(headers).reduce((acc, key) => {
+        acc[key.toLowerCase()] = headers[key];
+        return acc;
+    }, {});
+
+    $.log(`转换后的Headers: ${JSON.stringify(headersLower)}`);
+
+    if (headersLower.hasOwnProperty("x-playback-session-id")) {
+        $.log(`存在 x-playback-session-id 请求头`);
+        try {
             const notify = $.getdata("m3u8");
-            if (!notify || notify != finalUrl) {
-                $.setdata(finalUrl, "m3u8");
+            $.log(`存储的URL: ${notify}`);
+
+            // 构造最终的播放 URL
+            const finalUrl = playerScheme ? `${playerScheme}${encodeURIComponent(matchedUrl)}` : matchedUrl;
+            $.log(`最终播放 URL: ${finalUrl}`);
+
+            if (!notify || notify !== finalUrl) { // 使用 finalUrl 进行比较
+                $.setdata(finalUrl, "m3u8"); // 存储 finalUrl
+                $.log(`设置新的m3u8 URL: ${finalUrl}`);
+
+                const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
+
+                $.log(`Media URL: ${mediaUrl}`);
+
+                // 发送通知
                 $.msg(
-                    "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼",
-                    `点击此通知使用 ${player} 在线观看`,
-                    "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼",
-                    finalUrl
+                    "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎",
+                    `☼点击通知使用 ${player} 播放☀︎`,
+                    "☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎☼☀︎",
+                    {
+                        "open-url": finalUrl,
+                        "media-url": mediaUrl
+                    }
                 );
+                $.log(`发送通知成功`);
+            } else {
+                $.log(`URL 已经存在，无需发送通知`);
             }
-        } catch (e) {
-            $.log(`错误: ${e.message}`);
+        } catch (error) {
+            $.log(`发生错误: ${error.message}`);
         }
+    } else {
+        $.log(`请求头中不存在 x-playback-session-id`);
     }
+} else {
+    $.log(`URL 不匹配 m3u8 正则表达式`);
 }
+
 $.done({});
 
 //e
