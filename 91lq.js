@@ -8,7 +8,7 @@ const playerMap = {
     "Safari": null,
     "SenPlayer": "SenPlayer://x-callback-url/play?url=",
     "Filebar": "filebox://play?url=",
-    "yybp": "yybp://",
+    "yyb": "yybp://",
     "Alook": "alook://",
     "Stay": "stay://x-callback-url/open-download?url="
 };
