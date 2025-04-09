@@ -15,13 +15,13 @@ const playerMap = {
 
 // 播放器图标映射表
 const mediaMap = {
-    "Safari": "https://example.com/safari.png", // 替换为实际 Safari 图标 URL
-    "SenPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png",
-    "Filebar": "https://example.com/filebar.png", // 替换为实际 Filebar 图标 URL
-    "yybp": "https://example.com/yybp.png", // 替换为实际 yybp 图标 URL
-    "Alook": "https://example.com/alook.png", // 替换为实际 Alook 图标 URL
-    "Stay": "https://example.com/stay.png", // 替换为实际 Stay 图标 URL
-    "default": "https://via.placeholder.com/150" // 默认图标
+    "Safari": "https://raw.githubusercontent.com/LovedGM/icon/main/messy/Safari.png", // Safari 图标
+    "SenPlayer": "https://raw.githubusercontent.com/LovedGM/icon/main/messy/SenPlayer.png",
+    "Filebar": "https://raw.githubusercontent.com/LovedGM/icon/main/messy/Filebar.png", //Filebar 图标
+    "yyb": "https://raw.githubusercontent.com/LovedGM/icon/main/messy/yyb.png", //yyb 图标
+    "Alook": "https://raw.githubusercontent.com/LovedGM/icon/main/messy/Alook.png", //Alook 图标
+    "Stay": "https://raw.githubusercontent.com/LovedGM/icon/main/messy/Stay.png", //Stay 图标
+    "default": "https://via.placeholder.com/150" //默认图标
 };
 
 // Scheme 判断
