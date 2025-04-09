@@ -17,9 +17,8 @@ hostname = *.cloudfront.net
 */
 const $ = new Env("麻豆社区");
 
-// 读取 BoxJs 中的设置：scheme_select 是下拉选择，scheme_custom 是自定义文本
-const selected = $.getdata("scheme_select");
-const custom = $.getdata("scheme_custom");
+// 从 $argument.Player 获取播放器配置
+const player = $argument.Player || "SenPlayer"; // 默认值为 SenPlayer
 
 // 播放器映射表
 const playerMap = {
@@ -35,9 +34,10 @@ const playerMap = {
 };
 
 // Scheme 判断
-let scheme = selected === "自定义" ? custom : selected || "SenPlayer";
+let scheme = player; // 直接使用 $argument.Player 的值
 let playerScheme = playerMap[scheme] ?? (scheme?.includes("://") ? scheme : `${scheme}://`);
 if (scheme === "Safari") playerScheme = null;
+
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwdWJsaWMiLCJleHAiOjE3NDY2MzU1NDMsImlzc3VlciI6ImNvbS5idXR0ZXJmbHkiLCJzdWIiOiJhc2lnbiIsInVzZXJJZCI6MTcwNjI3NjkxfQ.DUQdJOKVJP_C4PRV1eccbQ1fAXwDbs1d1KVrUntSIt0";
 
 async function main() {
@@ -51,7 +51,8 @@ async function main() {
 
     const encryptedData = match[1];
     const decryptedData = decryptData(encryptedData, CryptoJS);
-
+    // ... 后续逻辑保持不变
+}
     // 用户信息接口 可忽略
     if (/\/api\/app\/user\/info/.test(url)) {
         let modified = decryptedData;
