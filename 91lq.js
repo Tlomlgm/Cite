@@ -6,14 +6,11 @@ const player = $argument.Player || "Safari"; // 默认播放器为 Safari
 // 播放器映射表
 const playerMap = {
     "Safari": null,
-    "Infuse": "infuse://x-callback-url/play?url=",
     "SenPlayer": "SenPlayer://x-callback-url/play?url=",
-    "PotPlayer": "potplayer://url=",
-    "nPlayer": "nplayer-http://",
-    "alook": "alook://open?url=",
-    "zoeplay": "zoeplay://",
-    "yybp": "yybp://play?url=",
-    "Stay": "stay://x-callback-url/open-download?url="
+    "Filebar": "filebox://play?url=",
+    "yybp": "yybp://",
+    "Alook": "alook://",
+    "Stay": "stay://x-callback-url/open-download?url=",
 };
 
 // Scheme 判断
