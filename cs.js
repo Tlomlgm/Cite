@@ -11,7 +11,7 @@ const playerMap = {
     "PotPlayer": "potplayer://url=",
     "nPlayer": "nplayer-http://",
     "alook": "alook://open?url=",
-    "zoeplay": "zoeplay://"
+    "zoeplay": "zoeplay://",
     "yybp": "yybp://play?url=",
     "Stay": "stay://x-callback-url/open-download?url=",
 };
