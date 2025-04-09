@@ -18,25 +18,32 @@ hostname = *.cloudfront.net
 const $ = new Env("麻豆社区");
 
 // 从 $argument.Player 获取播放器配置
-const player = $argument.Player || "SenPlayer"; // 默认值为 SenPlayer
+const player = $argument.Player || "Safari"; // 默认值改为 Safari
 
 // 播放器映射表
 const playerMap = {
+    "Safari": null,
     "SenPlayer": "SenPlayer://x-callback-url/play?url=",
     "Infuse": "infuse://x-callback-url/play?url=",
     "PotPlayer": "potplayer://url=",
     "nPlayer": "nplayer-http://",
-    "VLC": "vlc://",
     "alook": "alook://open?url=",
     "yybp": "yybp://play?url=",
-    "zoeplay": "zoeplay://",
-    "Safari": null
+    "zoeplay": "zoeplay://"
 };
 
 // Scheme 判断
-let scheme = player; // 直接使用 $argument.Player 的值
+let scheme = player;
 let playerScheme = playerMap[scheme] ?? (scheme?.includes("://") ? scheme : `${scheme}://`);
 if (scheme === "Safari") playerScheme = null;
+
+// 错误检查
+if (!playerMap[scheme] && !scheme?.includes("://") && scheme !== "Safari") {
+    $.log(`错误: 无效的播放器 ${scheme}`);
+    return $.done({});
+}
+
+$.log(`选择的播放器: ${player}, Scheme: ${playerScheme}`);
 
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwdWJsaWMiLCJleHAiOjE3NDY2MzU1NDMsImlzc3VlciI6ImNvbS5idXR0ZXJmbHkiLCJzdWIiOiJhc2lnbiIsInVzZXJJZCI6MTcwNjI3NjkxfQ.DUQdJOKVJP_C4PRV1eccbQ1fAXwDbs1d1KVrUntSIt0";
 
@@ -47,11 +54,14 @@ async function main() {
     const url = $request.url;
 
     const match = rawBody.match(/"data"\s*:\s*"([^"]+)"/);
-    if (!match) return $.done({});
+    if (!match) {
+        $.log("未找到加密数据");
+        return $.done({});
+    }
 
     const encryptedData = match[1];
     const decryptedData = decryptData(encryptedData, CryptoJS);
-    // ... 后续逻辑保持不变
+    // ... 后续逻辑待补充
 }
     // 用户信息接口 可忽略
     if (/\/api\/app\/user\/info/.test(url)) {
