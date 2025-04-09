@@ -1,24 +1,7 @@
-/* 
- * 麻豆社区
- * 解锁站内所有付费及会员视频
- * 广告及个人页面未作任何处理
- * 💡 boxjs地址：
- * https://raw.githubusercontent.com/Yu9191/Rewrite/refs/heads/main/boxjs.json
- * 2025-04-08
- ******************************
- 可以在boxjs里面设置播放器
- ******************************
-[rewrite_local]
-https://d1skbu98kuldnf.cloudfront.net/api/app/media/play url script-response-body https://raw.githubusercontent.com/Yu9191/Rewrite/refs/heads/main/mdsq2.js
-
-[mitm]
-hostname = *.cloudfront.net
-
-*/
 const $ = new Env("麻豆社区");
 
 // 从 $argument.Player 获取播放器配置
-const player = $argument.Player || "Safari"; // 默认值改为 Safari
+const player = $argument.Player || "Safari"; // 默认值 Safari
 
 // 播放器映射表
 const playerMap = {
@@ -48,57 +31,75 @@ $.log(`选择的播放器: ${player}, Scheme: ${playerScheme}`);
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJwdWJsaWMiLCJleHAiOjE3NDY2MzU1NDMsImlzc3VlciI6ImNvbS5idXR0ZXJmbHkiLCJzdWIiOiJhc2lnbiIsInVzZXJJZCI6MTcwNjI3NjkxfQ.DUQdJOKVJP_C4PRV1eccbQ1fAXwDbs1d1KVrUntSIt0";
 
 async function main() {
-    const Utils = await loadUtils();
-    const CryptoJS = Utils.createCryptoJS();
-    const rawBody = $response.body;
-    const url = $request.url;
+    try {
+        const Utils = await loadUtils();
+        const CryptoJS = Utils.createCryptoJS();
+        const rawBody = $response.body;
+        const url = $request.url;
 
-    const match = rawBody.match(/"data"\s*:\s*"([^"]+)"/);
-    if (!match) {
-        $.log("未找到加密数据");
-        return $.done({});
-    }
+        $.log(`请求 URL: ${url}`);
 
-    const encryptedData = match[1];
-    const decryptedData = decryptData(encryptedData, CryptoJS);
-    // ... 后续逻辑待补充
-}
-    // 用户信息接口 可忽略
-    if (/\/api\/app\/user\/info/.test(url)) {
-        let modified = decryptedData;
-        modified = modified.replace(/"nickName"\s*:\s*".*?"/, `"nickName":"baby66"`);
-        modified = modified.replace(/"vipExpire"\s*:\s*-?\d+/, `"vipExpire":62135596800`);
-        modified = modified.replace(/"vipExpireTime"\s*:\s*".*?"/, `"vipExpireTime":"9001-01-01T00:00:00Z"`);
-        modified = modified.replace(/"vipType"\s*:\s*\d+/, `"vipType":9`);
-        modified = modified.replace(/"liveVipExpire"\s*:\s*".*?"/, `"liveVipExpire":"9001-01-01T00:00:00Z"`);
-        modified = modified.replace(/"vipLevel"\s*:\s*\d+/, `"vipLevel":9`);
-        modified = modified.replace(/"cardName"\s*:\s*".*?"/, `"cardName":"永久VIP"`);
-        modified = modified.replace(/"leftWatchTimes"\s*:\s*\d+/, `"leftWatchTimes":9999`);
-        modified = modified.replace(/"totalWatchTimes"\s*:\s*\d+/, `"totalWatchTimes":9999`);
-        modified = modified.replace(/"movieTickets"\s*:\s*\d+/, `"movieTickets":9999`);
-        modified = modified.replace(/"isQuest"\s*:\s*(true|false)/, `"isQuest":false`);
-        modified = modified.replace(/"isOpen"\s*:\s*false/g, `"isOpen":true`);
-
-        const encryptedNew = encryptData(modified, CryptoJS);
-        const newBody = rawBody.replace(/"data"\s*:\s*"([^"]+)"/, `"data":"${encryptedNew}"`);
-        return $.done({ body: newBody });
-    }
-
-    // ✅ 视频播放接口
-    if (/\/api\/app\/media\/play/.test(url)) {
-        const matchVideoUrl = decryptedData.match(/"videoUrl"\s*:\s*"(.*?)"/);
-        if (matchVideoUrl && matchVideoUrl[1]) {
-            const videoUrl = matchVideoUrl[1];
-            const realUrl = `https://d1skbu98kuldnf.cloudfront.net/api/app/media/m3u8ex/${videoUrl}?token=${token}`;
-            const finalUrl = playerScheme ? playerScheme + encodeURIComponent(realUrl) : realUrl;
-
-            $.msg("🎬 已经获取到视频啦", "如果你喜欢小b的脚本，记得来频道点个关注哦❤️", "点击即可播放完整版~", finalUrl);
+        // 提取加密的 data 字段
+        const match = rawBody.match(/"data"\s*:\s*"([^"]+)"/);
+        if (!match) {
+            $.log("未找到加密数据");
+            return $.done({});
         }
+
+        const encryptedData = match[1];
+        $.log(`加密数据: ${encryptedData}`);
+
+        const decryptedData = decryptData(encryptedData, CryptoJS);
+        $.log(`解密数据: ${decryptedData}`);
+
+        // 分支 1: 用户信息接口
+        if (/\/api\/app\/user\/info/.test(url)) {
+            let modified = decryptedData;
+            modified = modified.replace(/"nickName"\s*:\s*".*?"/, `"nickName":"baby66"`);
+            modified = modified.replace(/"vipExpire"\s*:\s*-?\d+/, `"vipExpire":62135596800`);
+            modified = modified.replace(/"vipExpireTime"\s*:\s*".*?"/, `"vipExpireTime":"9001-01-01T00:00:00Z"`);
+            modified = modified.replace(/"vipType"\s*:\s*\d+/, `"vipType":9`);
+            modified = modified.replace(/"liveVipExpire"\s*:\s*".*?"/, `"liveVipExpire":"9001-01-01T00:00:00Z"`);
+            modified = modified.replace(/"vipLevel"\s*:\s*\d+/, `"vipLevel":9`);
+            modified = modified.replace(/"cardName"\s*:\s*".*?"/, `"cardName":"永久VIP"`);
+            modified = modified.replace(/"leftWatchTimes"\s*:\s*\d+/, `"leftWatchTimes":9999`);
+            modified = modified.replace(/"totalWatchTimes"\s*:\s*\d+/, `"totalWatchTimes":9999`);
+            modified = modified.replace(/"movieTickets"\s*:\s*\d+/, `"movieTickets":9999`);
+            modified = modified.replace(/"isQuest"\s*:\s*(true|false)/, `"isQuest":false`);
+            modified = modified.replace(/"isOpen"\s*:\s*false/g, `"isOpen":true`);
+
+            $.log(`修改后的用户数据: ${modified}`);
+
+            const encryptedNew = encryptData(modified, CryptoJS);
+            const newBody = rawBody.replace(/"data"\s*:\s*"[^"]+"/, `"data":"${encryptedNew}"`);
+            return $.done({ body: newBody });
+        }
+
+        // 分支 2: 视频播放接口
+        if (/\/api\/app\/media\/play/.test(url)) {
+            const matchVideoUrl = decryptedData.match(/"videoUrl"\s*:\s*"(.*?)"/);
+            if (matchVideoUrl && matchVideoUrl[1]) {
+                const videoUrl = matchVideoUrl[1];
+                const realUrl = `https://d1skbu98kuldnf.cloudfront.net/api/app/media/m3u8ex/${videoUrl}?token=${token}`;
+                const finalUrl = playerScheme ? playerScheme + encodeURIComponent(realUrl) : realUrl;
+
+                $.log(`视频 URL: ${finalUrl}`);
+                $.msg("🎬 已经获取到视频啦", "如果你喜欢小b的脚本，记得来频道点个关注哦❤️", "点击即可播放完整版~", finalUrl);
+            } else {
+                $.log("未找到 videoUrl，解密数据: " + decryptedData);
+            }
+            return $.done({});
+        }
+
+        // 默认返回原始响应
+        $.done({ body: rawBody });
+    } catch (error) {
+        $.log(`脚本错误: ${error.message}`);
         return $.done({});
     }
-
-    $.done({});
 }
+
+main();
 
 main().catch(e => {
     console.log(`❌ 执行错误: ${e.message}`);
