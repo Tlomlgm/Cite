@@ -10,7 +10,18 @@ const playerMap = {
     "Filebar": "filebox://play?url=",
     "yybp": "yybp://",
     "Alook": "alook://",
-    "Stay": "stay://x-callback-url/open-download?url=",
+    "Stay": "stay://x-callback-url/open-download?url="
+};
+
+// 播放器图标映射表
+const mediaMap = {
+    "Safari": "https://example.com/safari.png", // 替换为实际 Safari 图标 URL
+    "SenPlayer": "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png",
+    "Filebar": "https://example.com/filebar.png", // 替换为实际 Filebar 图标 URL
+    "yybp": "https://example.com/yybp.png", // 替换为实际 yybp 图标 URL
+    "Alook": "https://example.com/alook.png", // 替换为实际 Alook 图标 URL
+    "Stay": "https://example.com/stay.png", // 替换为实际 Stay 图标 URL
+    "default": "https://via.placeholder.com/150" // 默认图标
 };
 
 // Scheme 判断
@@ -25,6 +36,10 @@ if (!playerMap[scheme] && !scheme?.includes("://") && scheme !== "Safari") {
 }
 
 $.log(`选择的播放器: ${player}, Scheme: ${playerScheme}`);
+
+// 动态选择图标
+const mediaUrl = mediaMap[player] || mediaMap["default"];
+$.log(`选择的图标 URL: ${mediaUrl}`);
 
 let url = $request.url;
 let headers = $request.headers;
@@ -62,9 +77,7 @@ if (matchedUrl && matchedUrl.length > 0) {
                 $.setdata(finalUrl, "m3u8"); // 存储 finalUrl
                 $.log(`设置新的m3u8 URL: ${finalUrl}`);
 
-                const mediaUrl = "https://raw.githubusercontent.com/Tlomlgm/Icon/main/messy/SenPlayer.png";
-
-                $.log(`Media URL: ${mediaUrl}`);
+                $.log(`使用图标 URL: ${mediaUrl}`);
 
                 // 发送通知
                 $.msg(
