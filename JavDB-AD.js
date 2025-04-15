@@ -1,52 +1,66 @@
-// 获取响应体
-let body = $response.body;
+// 初始化变量
+const url = $request.url || "";
+const body = $response.body || "";
+const chxm1024 = {};
 
-// 确保响应体存在
-if (!body) {
+// 调试：输出 URL 和原始响应体
+console.log("Request URL:", url);
+console.log("Original Body:", body);
+
+// 检查响应体是否存在
+if (typeof $response === "undefined" || !body) {
+  console.log("Error: No response body or response undefined");
   $done({});
 }
 
-// 尝试解析 JSON
-let obj;
+// 解析 JSON
+let chxm1023;
 try {
-  obj = JSON.parse(body);
+  chxm1023 = JSON.parse(body);
 } catch (e) {
-  console.log("JSON 解析失败: " + e);
-  $done({});
-}
-
-// 确保 obj 和 obj.data 存在
-if (!obj || !obj.data) {
-  console.log("响应数据无效或缺少 data 字段");
+  console.log("Error: Failed to parse JSON -", e);
   $done({ body });
 }
 
-// 定义 URL 匹配常量
-const ada = "/ads";
-const adb = "/startup";
+// 检查 chxm1023 是否有效
+if (!chxm1023) {
+  console.log("Error: Parsed JSON is invalid");
+  $done({ body });
+}
 
-// 处理广告
-if ($request.url && $request.url.toLowerCase().indexOf(ada) !== -1) {
-  if (obj.data.ads) {
-    obj.data.ads = {};
+// 处理 /startup/（开屏广告）
+if (/startup/.test(url)) {
+  if (chxm1023.data) {
+    console.log("Modifying startup data...");
+    chxm1023.data.splash_ad = {
+      enabled: false,
+      overtime: 0,
+      ad: null
+    };
+    chxm1023.data.settings = chxm1023.data.settings || {};
+    chxm1023.data.settings.UPDATE_DESCRIPTION = "";
+    chxm1023.data.settings.NOTICE = "";
+    chxm1023.data.feedback = chxm1023.data.feedback || {};
+    chxm1023.data.feedback.placeholder = "";
+  } else {
+    console.log("Warning: chxm1023.data not found for /startup/");
   }
 }
 
-// 处理开屏广告和设置
-if ($request.url && $request.url.toLowerCase().indexOf(adb) !== -1) {
-  if (obj.data.splash_ad) {
-    obj.data.splash_ad.enabled = false;
-    obj.data.splash_ad.overtime = 0;
-    obj.data.splash_ad.ad = {};
-  }
-  if (obj.data.feedback) {
-    obj.data.feedback.placeholder = "";
-  }
-  if (obj.data.settings) {
-    obj.data.settings.UPDATE_DESCRIPTION = "";
-    obj.data.settings.NOTICE = "";
+// 处理 /ads/（横幅广告）
+if (/ads/.test(url)) {
+  if (chxm1023.data) {
+    console.log("Modifying ads data...");
+    chxm1023.data.enabled = false;
+    chxm1023.data.ads = {};
+  } else {
+    console.log("Warning: chxm1023.data not found for /ads/");
   }
 }
 
-// 输出修改后的响应
-$done({ body: JSON.stringify(obj) });
+// 准备输出
+chxm1024.body = JSON.stringify(chxm1023);
+console.log("Modified Body:", chxm1024.body);
+
+// 返回修改后的响应
+$done(chxm1024);
